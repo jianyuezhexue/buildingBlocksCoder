@@ -67,25 +67,6 @@ func writeCodeLogic(req *GenerateCodeReq) (any, error) {
 	// 获取当前文件路径
 	dirPath, _ := os.Getwd()
 	for _, itemFileCode := range httpResp.Data.Codes {
-
-		// 完善路径地址
-		if len(itemFileCode.FilePath) > 0 && itemFileCode.FilePath[0] == '/' {
-			// 如果path以/开头，直接使用
-			itemFileCode.FilePath = dirPath + itemFileCode.FilePath
-		} else {
-			// 如果path不以/开头，添加/
-			itemFileCode.FilePath = dirPath + "/" + itemFileCode.FilePath
-		}
-
-		// 判断路径是否存在
-		if !file.IsExist(itemFileCode.FilePath) {
-			// 创建目录
-			err := file.Mkdir(itemFileCode.FilePath)
-			if err != nil {
-				return nil, errors.New("创建目录失败：" + err.Error())
-			}
-		}
-
 		// 判断是否是前端文件
 		// itemFileCode.FileName 中读取 . 后面的文件名
 		fileType := ""
@@ -107,6 +88,24 @@ func writeCodeLogic(req *GenerateCodeReq) (any, error) {
 		}
 		if req.Type == 1 && !isFrountendFile {
 			continue
+		}
+
+		// 完善路径地址
+		if len(itemFileCode.FilePath) > 0 && itemFileCode.FilePath[0] == '/' {
+			// 如果path以/开头，直接使用
+			itemFileCode.FilePath = dirPath + itemFileCode.FilePath
+		} else {
+			// 如果path不以/开头，添加/
+			itemFileCode.FilePath = dirPath + "/" + itemFileCode.FilePath
+		}
+
+		// 判断路径是否存在
+		if !file.IsExist(itemFileCode.FilePath) {
+			// 创建目录
+			err := file.Mkdir(itemFileCode.FilePath)
+			if err != nil {
+				return nil, errors.New("创建目录失败：" + err.Error())
+			}
 		}
 
 		// 写入文件
