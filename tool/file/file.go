@@ -35,3 +35,22 @@ func WriteFile(path string, content string) error {
 	}
 	return nil
 }
+
+// ReadFile 读取文件
+func ReadFile(path string) (string, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+	var content string
+	buf := make([]byte, 1024)
+	for {
+		n, err := file.Read(buf)
+		if err != nil {
+			break
+		}
+		content += string(buf[:n])
+	}
+	return content, nil
+}

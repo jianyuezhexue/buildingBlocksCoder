@@ -108,13 +108,43 @@ func writeCodeLogic(req *GenerateCodeReq) (any, error) {
 			}
 		}
 
-		// 写入文件
+		// 拼接完成路径
 		fullFIlePath := itemFileCode.FilePath + itemFileCode.FileName
-		err = file.WriteFile(fullFIlePath, itemFileCode.Content)
-		if err != nil {
-			return nil, errors.New("写入文件失败：" + err.Error())
+
+		// todo 非覆盖文件，进行替换
+		if itemFileCode.WriteType == 1 {
+
+			// 0.校验文件是否存在，不存在跳过
+			if !file.IsExist(fullFIlePath) {
+				continue
+			}
+
+			// 1. 读取文件内容
+			content, err := file.ReadFile(fullFIlePath)
+			if err != nil {
+				return nil, errors.New("读取文件失败：" + err.Error())
+			}
+
+			// 2. 替换文件内容
+			// 拼接文件内容 + \n + 替换标识
+			itemFileCode.Content = content + "\n" + itemFileCode.ReplacementFlag
+			content = strings.Replace(content, itemFileCode.ReplacementFlag, itemFileCode.Content, 1)
+
+			err = file.WriteFile(fullFIlePath, content)
+			if err != nil {
+				return nil, errors.New("写入文件失败：" + err.Error())
+			}
+			logInfo = append(logInfo, "替换文件："+fullFIlePath)
 		}
-		logInfo = append(logInfo, "生成文件："+fullFIlePath)
+
+		// 覆盖文件，直接写入
+		if itemFileCode.WriteType == 0 {
+			err = file.WriteFile(fullFIlePath, itemFileCode.Content)
+			if err != nil {
+				return nil, errors.New("写入文件失败：" + err.Error())
+			}
+			logInfo = append(logInfo, "生成文件："+fullFIlePath)
+		}
 	}
 
 	// 5. 返回结果

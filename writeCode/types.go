@@ -53,7 +53,9 @@ type BuildingBlockFrontend struct {
 
 // 生成代码响应单条数据
 type GenerateCodeRespItemData struct {
-	FileName string `json:"fileName" common:"文件名称"`
-	FilePath string `json:"filePath" common:"文件路径"`
-	Content  string `json:"content" common:"文件内容"`
+	FileName        string `json:"fileName" common:"文件名称"`
+	FilePath        string `json:"filePath" common:"文件路径"`
+	Content         string `json:"content" common:"文件内容"`
+	WriteType       int    `json:"writeType" common:"写入类型-0-覆盖写入 1-替换写入" `
+	ReplacementFlag string `json:"replacementFlag" common:"替换标识" `
 }
