@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"os"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jianyuezhexue/buildingBlocksCoder/tool/file"
@@ -83,6 +84,29 @@ func writeCodeLogic(req *GenerateCodeReq) (any, error) {
 			if err != nil {
 				return nil, errors.New("创建目录失败：" + err.Error())
 			}
+		}
+
+		// 判断是否是前端文件
+		// itemFileCode.FileName 中读取 . 后面的文件名
+		fileType := ""
+		// 通过 . 号找到后面的文件类型名
+		dotIndex := strings.LastIndex(itemFileCode.FileName, ".")
+		if dotIndex != -1 && dotIndex < len(itemFileCode.FileName)-1 {
+			fileType = itemFileCode.FileName[dotIndex+1:]
+		}
+
+		// 判断是否是前端文件 | [ts,js,vue]
+		isFrountendFile := false
+		if fileType == "ts" || fileType == "js" || fileType == "vue" {
+			isFrountendFile = true
+		}
+
+		// 后端跳过前端文件，前端跳过后端文件
+		if req.Type == 0 && isFrountendFile {
+			continue
+		}
+		if req.Type == 1 && !isFrountendFile {
+			continue
 		}
 
 		// 写入文件
