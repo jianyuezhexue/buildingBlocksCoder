@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	var rootCmd = &cobra.Command{Use: "积木系统", Short: "生成代码CLI", Version: "1.0"}
+	var rootCmd = &cobra.Command{Use: "Coder", Short: "生成代码CLI", Version: "1.0"}
 	cmds := []*cobra.Command{
 		{
 			Use:     "start",
@@ -34,6 +34,8 @@ func main() {
 					fmt.Println("前端代码助手启动中...")
 				}
 
+				gin.SetMode(gin.ReleaseMode)
+
 				// 实例化引擎
 				r := gin.Default()
 
@@ -51,6 +53,7 @@ func main() {
 				r.POST("/writeCode", writeCode.WriteCode)
 
 				// 启动服务
+				fmt.Println("欢迎使用Coder")
 				r.Run(fmt.Sprintf("localhost:%s", port))
 			},
 		},
