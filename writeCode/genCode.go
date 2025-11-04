@@ -128,7 +128,7 @@ func writeCodeLogic(req *GenerateCodeReq) (any, error) {
 
 			// 2. 替换文件内容
 			// 拼接文件内容 + \n + 替换标识
-			itemFileCode.Content = content + "\n" + itemFileCode.ReplacementFlag
+			itemFileCode.Content = itemFileCode.Content + "\n" + itemFileCode.ReplacementFlag
 			content = strings.Replace(content, itemFileCode.ReplacementFlag, itemFileCode.Content, 1)
 
 			err = file.WriteFile(fullFIlePath, content)
