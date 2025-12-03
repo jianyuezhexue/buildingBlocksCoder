@@ -112,7 +112,14 @@ func writeCodeLogic(req *GenerateCodeReq) (any, error) {
 		// 拼接完成路径
 		fullFIlePath := itemFileCode.FilePath + itemFileCode.FileName
 
-		// todo 非覆盖文件，进行替换
+		// 代码生成.存在跳过
+		if itemFileCode.WriteType == 2 {
+			if file.IsExist(fullFIlePath) {
+				continue
+			}
+		}
+
+		// 代码生成.进行替换
 		if itemFileCode.WriteType == 1 {
 
 			// 0.校验文件是否存在，不存在跳过
