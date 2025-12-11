@@ -75,10 +75,41 @@ func main() {
 					fmt.Printf("无效的ID参数: %v\n", err)
 					return
 				}
-				req := &writeCode.GenerateCodeReq{Id: id}
+				req := &writeCode.GenerateCodeReq{Id: id, Type: 0}
 
 				// 执行生成
-				writeCode.WriteCodeLogic(req)
+				_, err = writeCode.WriteCodeLogic(req)
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+			},
+		},
+		{
+			Use:     "genFrontend",
+			Short:   "直接生成前端代码",
+			Example: "./coder genFrontend [id]",
+			Run: func(cmd *cobra.Command, args []string) {
+				// 第1个参数必填
+				if len(args) < 1 {
+					fmt.Println("请输入业务模型的ID")
+					return
+				}
+
+				// 组合参数
+				id, err := strconv.ParseUint(args[0], 10, 64)
+				if err != nil {
+					fmt.Printf("无效的ID参数: %v\n", err)
+					return
+				}
+
+				// 执行生成
+				req := &writeCode.GenerateCodeReq{Id: id, Type: 1}
+				_, err = writeCode.WriteCodeLogic(req)
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
 			},
 		},
 	}
