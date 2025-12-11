@@ -41,7 +41,6 @@ func WriteCodeLogic(req *GenerateCodeReq) (any, error) {
 
 	// 1. 接口拉取数据
 	http := http.NewHttp()
-	// httpUrl := "http://localhost:2400" + "/v1/entity/genCode"
 	httpUrl := "http://8.155.47.77:2400" + "/v1/entity/genCode"
 	resBytes, err := http.Post(httpUrl, req)
 	if err != nil {
