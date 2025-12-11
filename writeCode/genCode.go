@@ -24,7 +24,7 @@ func WriteCode(c *gin.Context) {
 	}
 
 	// 2. 逻辑实现
-	writeResp, err := writeCodeLogic(req)
+	writeResp, err := WriteCodeLogic(req)
 	if err != nil {
 		resp.BizError(c, "生成代码请求失败："+err.Error())
 		return
@@ -35,7 +35,7 @@ func WriteCode(c *gin.Context) {
 }
 
 // writeCodeLogic
-func writeCodeLogic(req *GenerateCodeReq) (any, error) {
+func WriteCodeLogic(req *GenerateCodeReq) (any, error) {
 
 	logInfo := []string{}
 

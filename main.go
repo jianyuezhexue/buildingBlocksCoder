@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jianyuezhexue/buildingBlocksCoder/writeCode"
@@ -55,6 +56,29 @@ func main() {
 				// 启动服务
 				fmt.Println("欢迎使用Coder")
 				r.Run(fmt.Sprintf("localhost:%s", port))
+			},
+		},
+		{
+			Use:     "gen",
+			Short:   "直接生成后端代码",
+			Example: "./coder genBackend [id]",
+			Run: func(cmd *cobra.Command, args []string) {
+				// 第一个参数必填
+				if len(args) < 1 {
+					fmt.Println("请输入业务模型的ID")
+					return
+				}
+
+				// 组合参数
+				id, err := strconv.ParseUint(args[0], 10, 64)
+				if err != nil {
+					fmt.Printf("无效的ID参数: %v\n", err)
+					return
+				}
+				req := &writeCode.GenerateCodeReq{Id: id}
+
+				// 执行生成
+				writeCode.WriteCodeLogic(req)
 			},
 		},
 	}

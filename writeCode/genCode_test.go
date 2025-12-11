@@ -14,7 +14,7 @@ func TestWriteCode(t *testing.T) {
 		SysCode: "buildingBlocks",
 		Domain:  "master",
 	}
-	resp, err := writeCodeLogic(req)
+	resp, err := WriteCodeLogic(req)
 	assert.Nil(t, err)
 	t.Log(resp)
 }
