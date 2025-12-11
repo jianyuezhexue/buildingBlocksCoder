@@ -59,7 +59,7 @@ func main() {
 			},
 		},
 		{
-			Use:     "gen",
+			Use:     "genBackend",
 			Short:   "直接生成后端代码",
 			Example: "./coder genBackend [id]",
 			Run: func(cmd *cobra.Command, args []string) {
