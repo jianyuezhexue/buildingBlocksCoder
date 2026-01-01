@@ -3,7 +3,6 @@ package writeCode
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"os"
 	"strings"
 
@@ -114,8 +113,6 @@ func WriteCodeLogic(req *GenerateCodeReq) (any, error) {
 
 		// 代码生成.存在跳过
 		if itemFileCode.WriteType == 2 {
-			fmt.Println(fullFIlePath + "进来了")
-			fmt.Println("是否存在", file.IsExist(fullFIlePath))
 
 			// 存在跳过
 			if file.IsExist(fullFIlePath) {
