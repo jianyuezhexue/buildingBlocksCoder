@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -93,11 +92,11 @@ func WriteCodeLogic(req *GenerateCodeReq) (any, error) {
 
 		// 完善路径地址
 		if len(itemFileCode.FilePath) > 0 && itemFileCode.FilePath[0] == '/' {
-			// 如果path以/开头，直接使用绝对路径
-			itemFileCode.FilePath = filepath.Clean(itemFileCode.FilePath)
+			// 如果path以/开头，直接使用
+			itemFileCode.FilePath = dirPath + itemFileCode.FilePath
 		} else {
-			// 相对路径，拼接后使用filepath.Clean规范化，自动处理../和./
-			itemFileCode.FilePath = filepath.Clean(filepath.Join(dirPath, itemFileCode.FilePath))
+			// 如果path不以/开头，添加/
+			itemFileCode.FilePath = dirPath + "/" + itemFileCode.FilePath
 		}
 
 		// 判断路径是否存在
