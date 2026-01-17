@@ -65,23 +65,26 @@ func main() {
 			Run: func(cmd *cobra.Command, args []string) {
 				// 第一个参数必填
 				if len(args) < 1 {
-					fmt.Println("请输入业务模型的ID")
+					fmt.Println("请至少输入一个业务模型的ID")
 					return
 				}
 
-				// 组合参数
-				id, err := strconv.ParseUint(args[0], 10, 64)
-				if err != nil {
-					fmt.Printf("无效的ID参数: %v\n", err)
-					return
-				}
-				req := &writeCode.GenerateCodeReq{Id: id, Type: 0}
+				// 循环执行所有ID
+				for _, itemId := range args {
+					id, err := strconv.ParseUint(itemId, 10, 64)
+					if err != nil {
+						fmt.Printf("无效的ID参数: %v\n", err)
+						return
+					}
+					req := &writeCode.GenerateCodeReq{Id: id, Type: 0}
 
-				// 执行生成
-				_, err = writeCode.WriteCodeLogic(req)
-				if err != nil {
-					fmt.Println(err)
-					return
+					// 执行生成
+					_, err = writeCode.WriteCodeLogic(req)
+					if err != nil {
+						fmt.Println(err)
+						return
+					}
+
 				}
 			},
 		},
@@ -92,23 +95,25 @@ func main() {
 			Run: func(cmd *cobra.Command, args []string) {
 				// 第1个参数必填
 				if len(args) < 1 {
-					fmt.Println("请输入业务模型的ID")
+					fmt.Println("请至少输入一个业务模型的ID")
 					return
 				}
 
-				// 组合参数
-				id, err := strconv.ParseUint(args[0], 10, 64)
-				if err != nil {
-					fmt.Printf("无效的ID参数: %v\n", err)
-					return
-				}
+				// 循环执行所有ID
+				for _, itemId := range args {
+					id, err := strconv.ParseUint(itemId, 10, 64)
+					if err != nil {
+						fmt.Printf("无效的ID参数: %v\n", err)
+						return
+					}
+					req := &writeCode.GenerateCodeReq{Id: id, Type: 1}
 
-				// 执行生成
-				req := &writeCode.GenerateCodeReq{Id: id, Type: 1}
-				_, err = writeCode.WriteCodeLogic(req)
-				if err != nil {
-					fmt.Println(err)
-					return
+					// 执行生成
+					_, err = writeCode.WriteCodeLogic(req)
+					if err != nil {
+						fmt.Println(err)
+						return
+					}
 				}
 			},
 		},
